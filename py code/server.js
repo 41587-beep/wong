@@ -1,20 +1,23 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+<form id="loginForm">
+  <input type="text" name="username" placeholder="Username" required>
+  <input type="password" name="password" placeholder="Password" required>
+  <button type="submit">Login</button>
+</form>
 
-const app = express();
+<script>
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
+  const response = await fetch("/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json();
+  alert(result.message);
 });
-
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
-
-  res.send(`สวัสดี ${username} พี่เต้สุดหล่อ  รวยไม่ไหวแล้ววว เยสแม่่่่`);
-});
-
-app.listen(3000, () => {
-  console.log("Server running at http://localhost:3000");
-});
+</script>
